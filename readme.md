@@ -33,7 +33,7 @@
 
 逻辑运算符的输入方式如下：
 
-| $\neg$ | $\and$ | $\or$ | $\neg \and$ (nand) | $\neg \or$ (nor) | $\rightarrow$ | $\leftrightarrow$ |
+|  negation  | conjunction | disjunction | nand | nor | material implication | equivalence |
 | :----: | :----: | :---: | :----------------: | :--------------: | :-----------: | :---------------: |
 | `\neg` | `\and` | `\or` | `\nand` 或  `\na`  | `\nor` 或 `\no`  |     `\im`     |       `\eq`       |
 
