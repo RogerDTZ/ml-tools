@@ -20,8 +20,8 @@
 
 用法：
 
-* `TrueTable.exe inputfile  `：从`inputfile`中读取数据，并将表格输出在命令行上
-* `TrueTable.exe inputfile outputfile`：从`inputfile`中读取数据，并将表格输出在`output_file`中
+* `TrueTable.exe input_file  `：从`input_file`中读取数据，并将表格输出在命令行上
+* `TrueTable.exe input_file output_file`：从`input_file`中读取数据，并将表格输出在`output_file`中
 
 ## 3. 输入格式
 
