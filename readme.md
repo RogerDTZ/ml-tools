@@ -4,7 +4,7 @@
 
 
 # Download
-[Latest release](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/1.0)
+[Latest release](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/1.0.1)
 
 
 
