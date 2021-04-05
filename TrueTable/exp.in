@@ -1,0 +1,13 @@
+A \im B
+B \im C
+(C \or D) \eq (\neg B)
+---
+\neg((\neg B) \or A)
+A \or (\neg C)
+B \im (\neg C)
+---
+D \im B
+A \or (\neg B)
+\neg(D \and A)
+D
+---
