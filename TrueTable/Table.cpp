@@ -133,7 +133,7 @@ void Table::initNodes(std::string str) {
 						this->idMap[tuple] = exp;
 						this->nodes.push_back(exp);
 						++idCnt;
-						std::cout << "[Symbol] New expression: " << exp->getName() << std::endl;
+						std::cout << "[Symbol] new expression: " << exp->getName() << std::endl;
 					} else {
 						exp = idMap[tuple];
 					}
