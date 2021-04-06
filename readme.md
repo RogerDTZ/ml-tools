@@ -4,12 +4,12 @@
 
 
 
-# Download
-[Latest release](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/1.1)
+# 下载
+[Latest release (TrueTable.exe)](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/1.1)
 
 
 
-# Usage
+# 用法
 
 - 1 - [前置环境](#1-前置环境)
 - 2 - [运行](#2-运行)
@@ -21,9 +21,13 @@
 - 4 - [输出说明](#4-输出说明)
 - 5 - [示例](#5-示例)
 
+
+
 ## 1. 前置环境
 
 你可能需要安装[VC运行库](https://aka.ms/vs/16/release/VC_redist.x64.exe)以运行本程序
+
+
 
 ## 2. 运行
 
@@ -33,6 +37,8 @@
 
 * `TrueTable.exe input_file  `：从`input_file`中读取数据，并将表格输出在命令行上
 * `TrueTable.exe input_file output_file`：从`input_file`中读取数据，并将表格输出在`output_file`中
+
+
 
 ## 3. 输入格式
 
@@ -60,13 +66,17 @@
 
 **注：每个运算符后应至少有一个空格，或紧跟左括号`(`**
 
+
+
 ## 4. 输出说明
 
 表格采用Markdown样式，每列居中输出
 
-先按输入出现的顺序依次输出底层逻辑变量，再输出各中间逻辑表达式，最后按输入的顺序依次输出目标表达式（但若目标表达式为一个底层逻辑变量，它不会被放到最后一列）。本质相同的逻辑表达式只会被输出一次。
+先按输入出现的顺序依次输出底层逻辑变量，再输出各中间逻辑表达式，最后按输入的顺序依次输出目标表达式（但若目标表达式为一个底层逻辑变量，它不会被放到最后一列）。本质相同的逻辑表达式只会被输出一次
 
 程序会枚举$2^N$种底层逻辑变量的取值，并输出所有中间逻辑表达式和目标表达式的取值
+
+
 
 ## 5. 示例
 
