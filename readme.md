@@ -5,7 +5,7 @@
 
 
 # 下载
-[Latest release (TrueTable.exe)](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/1.1)
+[Latest release (TrueTable.exe)](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/1.1.1)
 
 
 
