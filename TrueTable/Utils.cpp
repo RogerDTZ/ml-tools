@@ -45,6 +45,7 @@ std::string OperatorToCmd(Operator opt) {
 }
 
 std::string preprocessString(std::string str) {
+	std::string inStr = str;
 	try {
 		while (true) {
 			unsigned int st = 0, ed = 0;
@@ -75,11 +76,11 @@ std::string preprocessString(std::string str) {
 			else if (op == R"(\eq)")
 				sub = "+";
 			else
-				throw ("unrecognized command: " + op).c_str();
+				throw std::string("invalid command: " + op);
 			str = str.substr(0, st) + sub + str.substr(ed, str.length() - ed);
 		}
-	} catch (const char* msg) {
-		std::cout << "Preprocessing: " << msg << std::endl;
+	} catch (const std::string msg) {
+		std::cout << "[ERROR] error when preprocess " << inStr << " : " << msg << std::endl;
 		exit(-1);
 	}
 	return str;

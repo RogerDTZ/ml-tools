@@ -9,6 +9,8 @@
 #include "Utils.h"
 #include "Expression.h"
 
+const unsigned int VarMaxNum = 50;
+
 class Table {
 
 public:
@@ -28,8 +30,9 @@ private:
 	std::vector<std::shared_ptr<Expression>>								vars;
 	int																		idCnt;
 	int																		nameCnt;
+	int																		targetCnt;
 
-	void initNodes(std::string& str);
+	void initNodes(std::string str);
 	void printTableHeaders(std::ostream& os);
 	void printTableRow(std::ostream& os);
 	void reset();

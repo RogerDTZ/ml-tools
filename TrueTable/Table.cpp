@@ -9,14 +9,16 @@ Table::Table() {
 void Table::setTargets(std::string expression) {
 	try {
 		this->initNodes(expression);
-	} catch (const char* msg) {
-		std::cout << "[ERROR]" << msg << std::endl;
+	} catch (const std::string msg) {
+		std::cout << "[ERROR] error in expression " << expression << " : " << msg << std::endl;
 		exit(-1);
 	}
+	std::cout << "[TTable] Successfully added expression " << expression << std::endl;
+	++this->targetCnt;
 }
 
 bool Table::empty() {
-	return this->nodes.empty();
+	return this->targetCnt > 0;
 }
 
 void Table::reset() {
@@ -24,11 +26,12 @@ void Table::reset() {
 	this->nameMap.clear();
 	this->nodes.clear();
 	this->vars.clear();
-	idCnt = 30;
-	nameCnt = 0;
+	this->idCnt = VarMaxNum;
+	this->nameCnt = 0;
+	this->targetCnt = 0;
 }
 
-void Table::initNodes(std::string& str) {
+void Table::initNodes(std::string str) {
 	str = "(" + str + ")";
 	std::stack<unsigned> lb;
 	std::stack<unsigned> opr;
@@ -54,6 +57,13 @@ void Table::initNodes(std::string& str) {
 						idMap[tuple] = exp;
 						this->nodes.push_back(exp);
 						this->vars.push_back(exp);
+						std::cout << "[Symbol] new variable(" << this->nodes.size() << "): " << curName << std::endl;
+						if (this->nodes.size() > 25) {
+							std::cout << "[Warning] quite a few variables." << std::endl;
+						}
+						if (this->nodes.size() > VarMaxNum) {
+							throw std::string("computational error: too many variables! (limit=" + std::to_string(VarMaxNum)) + ")";
+						}
 					} else {
 						exp = idMap[tuple];
 					}
@@ -65,79 +75,79 @@ void Table::initNodes(std::string& str) {
 				lb.push(i);
 			} else if (str[i] == ')') {
 				if (lb.empty()) {
-					throw "Error format: bracket cannot match!";
-				} else {
-					unsigned int lpos = lb.top();
-					lb.pop();
-					if (ele.empty() || ele.top().first < lpos) {
-						throw "Error format: empty pair of brackets!";
-					} else {
-						std::pair<unsigned int, std::shared_ptr<Expression>> lhs, rhs;
-						rhs = ele.top();
-						ele.pop();
-						if (ele.empty() || ele.top().first < lpos) {
-							if (opr.size() > 0 && opr.top() > lpos) {
-								Operator op = util::CharToOperator(str[opr.top()]);
-								if (!(op == Operator::NEG && opr.top() < rhs.first)) {
-									throw "Error format: illegal operation on single expression!";
-								}
-								opr.pop();
-								std::shared_ptr<Expression> exp(new Expression());
-								exp->initAsOpr(Operator::NEG, rhs.second, nullptr, idCnt);
-								std::tuple<Operator, int, int> tuple = exp->getTuple();
-								if (this->idMap.find(tuple) == this->idMap.end()) {
-									idMap[tuple] = exp;
-									this->nodes.push_back(exp);
-									++idCnt;
-								} else {
-									exp = idMap[tuple];
-								}
-								ele.push(std::make_pair(lpos, exp));
-							} else {
-								ele.push(rhs);
-							}
-							continue;
-						}
-						lhs = ele.top();
-						ele.pop();
-						if (ele.size() > 0 && ele.top().first > lpos) {
-							throw "Error format: too many subexpressions in one pair of brackets!";
-						}
-						if (opr.empty() || opr.top() < lpos) {
-							throw "Error format: NO operator within a expression!";
-						}
-						if (!(lhs.first < opr.top() && opr.top() < rhs.first)) {
-							throw "Error format: please check the order!";
-						}
+					throw std::string("error format: bracket cannot match!");
+				}
+				unsigned int lpos = lb.top();
+				lb.pop();
+				if (ele.empty() || ele.top().first < lpos) {
+					throw std::string("error format: empty pair of brackets!");
+				}
+				std::pair<unsigned int, std::shared_ptr<Expression>> lhs, rhs;
+				rhs = ele.top();
+				ele.pop();
+				if (ele.empty() || ele.top().first < lpos) { // single exp
+					if (opr.size() > 0 && opr.top() > lpos) {
 						Operator op = util::CharToOperator(str[opr.top()]);
-						if (op == Operator::NON) {
-							throw ("Error symbol: unrecognized operator " + std::string(1, str[opr.top()])).c_str();
+						if (!(op == Operator::NEG && opr.top() < rhs.first)) {
+							throw std::string("error format: invalid operator!");
 						}
 						opr.pop();
 						std::shared_ptr<Expression> exp(new Expression());
-						exp->initAsOpr(op, lhs.second, rhs.second, idCnt);
+						exp->initAsOpr(Operator::NEG, rhs.second, nullptr, idCnt);
 						std::tuple<Operator, int, int> tuple = exp->getTuple();
-						if (idMap.find(tuple) == idMap.end()) {
-							idMap[tuple] = exp;
+						if (this->idMap.find(tuple) == this->idMap.end()) {
+							this->idMap[tuple] = exp;
 							this->nodes.push_back(exp);
 							++idCnt;
+							std::cout << "[Symbol] new expression: " << exp->getName() << std::endl;
 						} else {
 							exp = idMap[tuple];
 						}
 						ele.push(std::make_pair(lpos, exp));
+					} else {
+						ele.push(rhs);
 					}
+				} else { // paired exp
+					lhs = ele.top();
+					ele.pop();
+					if (ele.size() > 0 && ele.top().first > lpos) {
+						throw std::string("error format: too many subexpressions in one pair of brackets!");
+					}
+					if (opr.empty() || opr.top() < lpos) {
+						throw std::string("error format: NO operator in a pair of brackets!");
+					}
+					if (!(lhs.first < opr.top() && opr.top() < rhs.first)) {
+						throw std::string("error format: please check the order between expressions and operators!");
+					}
+					Operator op = util::CharToOperator(str[opr.top()]);
+					if (op == Operator::NON) {
+						throw std::string("error symbol: unrecognized operator " + std::string(1, str[opr.top()]));
+					}
+					opr.pop();
+					std::shared_ptr<Expression> exp(new Expression());
+					exp->initAsOpr(op, lhs.second, rhs.second, idCnt);
+					std::tuple<Operator, int, int> tuple = exp->getTuple();
+					if (this->idMap.find(tuple) == this->idMap.end()) {
+						this->idMap[tuple] = exp;
+						this->nodes.push_back(exp);
+						++idCnt;
+						std::cout << "[Symbol] New expression: " << exp->getName() << std::endl;
+					} else {
+						exp = idMap[tuple];
+					}
+					ele.push(std::make_pair(lpos, exp));
 				}
 			} else if (str[i] != ' ') {
 				opr.push(i);
-			}
+			} 
 		}
 	}
 	if (!opr.empty())
-		throw "Extra operators!";
+		throw std::string("error format: extra operators at the end!");
 	if (!lb.empty())
-		throw "Extra left braket!";
+		throw std::string("error format: left brackets not matched!");
 	if (ele.size() > 1)
-		throw "Extra expression!";
+		throw std::string("error format: expression illegal! (not a single one)");
 	this->nodes[this->nodes.size() - 1]->setTargetExp(true);
 }
 
@@ -190,6 +200,12 @@ void Table::printTableRow(std::ostream& os) {
 }
 
 void Table::flush(std::ostream& os) {
+	std::cout << "[TTable] printinig result..." << std::endl;
+	std::cout << " - Target expression: " << this->targetCnt << std::endl;
+	std::cout << " - Total  expression: " << this->nodes.size() << std::endl;
+	std::cout << " - Total  variable  : " << this->vars.size() << std::endl;
+	std::cout << " - Rows   count     : " << (1 << this->vars.size()) << std::endl;
+	std::cout << " - Total  expense   : " << 1ll * (1 << this->vars.size()) * this->nodes.size() << std::endl;
 	this->printTableHeaders(os);
 	unsigned int varCnt = this->vars.size();
 	unsigned int state = 1 << varCnt;
@@ -203,6 +219,8 @@ void Table::flush(std::ostream& os) {
 			exp->eval();
 		this->printTableRow(os);
 	}
+	std::cout << "[TTable] table generated successfully" << std::endl;
+	std::cout << "[TTable] buffer cleared. " << std::endl << std::endl;
 	os << std::endl << std::endl << std::endl << std::endl;
 	this->reset();
 }
