@@ -7,13 +7,15 @@ Table::Table() {
 }
 
 void Table::setTargets(std::string expression) {
+	std::string originExpression = expression;
+	expression = util::PreprocessString(expression);
 	try {
 		this->initNodes(expression);
 	} catch (const std::string msg) {
-		std::cout << "[ERROR] error in expression " << expression << " : " << msg << std::endl;
+		std::cout << "[ERROR] error in expression " << originExpression << " : " << msg << std::endl;
 		exit(-1);
 	}
-	std::cout << "[TTable] Successfully added expression " << expression << std::endl;
+	std::cout << "[TTable] Successfully added expression " << originExpression << std::endl;
 	++this->targetCnt;
 }
 

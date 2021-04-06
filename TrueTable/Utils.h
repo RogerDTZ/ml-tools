@@ -23,6 +23,6 @@ Operator	CharToOperator(char c);
 
 std::string OperatorToCmd(Operator opt);
 
-std::string preprocessString(std::string str);
+std::string PreprocessString(std::string str);
 
 }

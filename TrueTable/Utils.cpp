@@ -44,7 +44,7 @@ std::string OperatorToCmd(Operator opt) {
 	return "?";
 }
 
-std::string preprocessString(std::string str) {
+std::string PreprocessString(std::string str) {
 	std::string inStr = str;
 	try {
 		while (true) {

@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 			} else if (line == "") {
 				continue;
 			}
-			table.setTargets(util::preprocessString(line));
+			table.setTargets(line);
 		}
 		if (!table.empty())
 			table.flush(*os);
