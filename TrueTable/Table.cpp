@@ -18,7 +18,7 @@ void Table::setTargets(std::string expression) {
 }
 
 bool Table::empty() {
-	return this->targetCnt > 0;
+	return this->targetCnt == 0;
 }
 
 void Table::reset() {
@@ -201,11 +201,11 @@ void Table::printTableRow(std::ostream& os) {
 
 void Table::flush(std::ostream& os) {
 	std::cout << "[TTable] printinig result..." << std::endl;
-	std::cout << " - Target expression: " << this->targetCnt << std::endl;
-	std::cout << " - Total  expression: " << this->nodes.size() << std::endl;
-	std::cout << " - Total  variable  : " << this->vars.size() << std::endl;
-	std::cout << " - Rows   count     : " << (1 << this->vars.size()) << std::endl;
-	std::cout << " - Total  expense   : " << 1ll * (1 << this->vars.size()) * this->nodes.size() << std::endl;
+	std::cout << " - target expression: " << this->targetCnt << std::endl;
+	std::cout << " - total  expression: " << this->nodes.size() << std::endl;
+	std::cout << " - total  variable  : " << this->vars.size() << std::endl;
+	std::cout << " - rows   count     : " << (1 << this->vars.size()) << std::endl;
+	std::cout << " - total  expense   : " << 1ll * (1ll << this->vars.size()) * this->nodes.size() << std::endl;
 	this->printTableHeaders(os);
 	unsigned int varCnt = this->vars.size();
 	unsigned int state = 1 << varCnt;
