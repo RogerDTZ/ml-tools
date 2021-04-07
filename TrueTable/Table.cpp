@@ -59,7 +59,7 @@ void Table::initNodes(std::string str) {
 						idMap[tuple] = exp;
 						this->nodes.push_back(exp);
 						this->vars.push_back(exp);
-						std::cout << "[Symbol] new variable(" << this->nodes.size() << "): " << curName << std::endl;
+						std::cout << "[Symbol] new variable(" << this->vars.size() << "): " << curName << std::endl;
 						if (this->nodes.size() > 25) {
 							std::cout << "[Warning] quite a few variables." << std::endl;
 						}
