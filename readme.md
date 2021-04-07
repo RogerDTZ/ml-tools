@@ -5,7 +5,7 @@
 
 
 # 下载
-[Latest release (TrueTable.exe)](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/v1.1.2)
+[Latest release (mlt.exe)](https://github.com/RogerDTZ/MathematicalLogic/releases/tag/v1.1.2)
 
 
 
@@ -35,8 +35,8 @@
 
 用法：
 
-* `TrueTable.exe input_file  `：从`input_file`中读取数据，并将表格输出在命令行上
-* `TrueTable.exe input_file output_file`：从`input_file`中读取数据，并将表格输出在`output_file`中
+* `mlt.exe input_file  `：从`input_file`中读取数据，并将表格输出在命令行上
+* `mlt.exe input_file output_file`：从`input_file`中读取数据，并将表格输出在`output_file`中
 
 
 
@@ -94,7 +94,7 @@
 (T \and A) \and (B \or F)
 ```
 
-运行：`TrueTable.exe exp.in exp.out`
+运行：`mlt.exe exp.in exp.out`
 
 `exp.out`
 
